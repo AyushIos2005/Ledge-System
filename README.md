@@ -1,433 +1,343 @@
-Ledger System
+# 💳 Ledger System — Banking Backend API
 
-A backend service for a banking/financial ledger application built with Node.js, Express.js, MongoDB, and Mongoose.
+A secure and scalable **Banking / Ledger Backend API** built with **Node.js, Express.js, MongoDB, and JWT authentication**.
 
-The project focuses on secure user authentication, account/user management, and ledger-oriented backend operations through REST APIs.
+The project provides a backend foundation for user authentication, account management, transactions, and ledger-based financial operations.
 
-Features
+## 🚀 Live Server
 
-User registration and login
+**Production API Server:**
+[https://ledge-system.onrender.com](https://ledge-system.onrender.com?utm_source=chatgpt.com)
 
-JWT-based authentication
+### Server Status
 
-HTTP cookie and Bearer-token authentication support
+You can open the live server URL to verify that the backend is running.
 
-Password hashing with bcrypt
+```text
+Server is Working properly
+```
 
-Protected API routes
+---
 
-MongoDB persistence with Mongoose
+## ✨ Features
 
-Email integration using Nodemailer and Gmail OAuth2
+* 🔐 User Registration & Login
+* 🔑 JWT Authentication
+* 🍪 Cookie-based Authentication
+* 🛡️ Protected Routes
+* 👤 User Profile Management
+* 🔒 Password Hashing
+* 📧 Email Verification / Notifications
+* 💰 Banking / Ledger Operations
+* 🗄️ MongoDB Database
+* 📦 Mongoose ODM
+* 📮 Postman API Testing
+* 🌐 Production Deployment with Render
+* ⚙️ Environment Variable Configuration
 
-OTP/email-based account workflows
+---
 
-Centralized authentication middleware
+## 🛠️ Tech Stack
 
-Environment-based configuration
+| Technology        | Purpose               |
+| ----------------- | --------------------- |
+| Node.js           | Backend Runtime       |
+| Express.js        | REST API Framework    |
+| MongoDB           | Database              |
+| Mongoose          | MongoDB ODM           |
+| JWT               | Authentication        |
+| bcrypt / bcryptjs | Password Hashing      |
+| Nodemailer        | Email Service         |
+| Gmail OAuth2      | Email Authentication  |
+| dotenv            | Environment Variables |
+| Postman           | API Testing           |
+| Git & GitHub      | Version Control       |
+| Render            | Deployment            |
 
-RESTful API architecture
+---
 
-Validation and structured error responses
+## 📁 Project Structure
 
-Tech Stack
+```text
+Backend_LASER/
+│
+├── backend/
+│   ├── src/
+│   │   ├── controllers/
+│   │   ├── models/
+│   │   ├── routes/
+│   │   ├── middleware/
+│   │   ├── services/
+│   │   ├── utils/
+│   │   └── app.js
+│   │
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+│
+├── note.md
+└── README.md
+```
 
-Technology
+---
 
-Purpose
+## ⚙️ Installation
 
-Node.js
+Clone the repository:
 
-Backend runtime
-
-Express.js
-
-REST API framework
-
-MongoDB
-
-Database
-
-Mongoose
-
-ODM
-
-JWT
-
-Authentication
-
-bcrypt/bcryptjs
-
-Password hashing
-
-Nodemailer
-
-Email delivery
-
-Gmail OAuth2
-
-Secure email authentication
-
-dotenv
-
-Environment configuration
-
-Postman
-
-API testing
-
-Git/GitHub
-
-Version control
-
-Project Structure
-
-Ledger-System/
-└── backend/
-    ├── src/
-    │   ├── controllers/
-    │   ├── models/
-    │   ├── routes/
-    │   ├── middlewares/
-    │   ├── services/
-    │   └── app.js
-    ├── server.js
-    ├── package.json
-    └── .env
-
-The exact folders may vary as the project evolves.
-
-Getting Started
-
-1. Clone the repository
-
+```bash
 git clone https://github.com/AyushIos2005/Ledge-System.git
-cd Ledge-System
+```
 
-2. Open the backend
+Move into the project:
 
-cd backend
+```bash
+cd Ledge-System/backend
+```
 
-3. Install dependencies
+Install dependencies:
 
+```bash
 npm install
+```
 
-4. Configure environment variables
+---
 
-Create a .env file:
+## 🔐 Environment Variables
 
+Create a `.env` file inside the `backend` folder.
+
+```env
 PORT=5000
+
 MONGO_URI=your_mongodb_connection_string
+
 JWT_SECRET=your_jwt_secret
 
-USERMAIL=your_email@gmail.com
-CLIENT_ID=your_google_oauth_client_id
-CLIENT_SECRET=your_google_oauth_client_secret
-REFRESH_TOKEN=your_google_oauth_refresh_token
+USERMAIL=your_gmail_address
 
-Never commit .env to GitHub.
+CLIENT_ID=your_google_client_id
 
-Running the Server
+CLIENT_SECRET=your_google_client_secret
 
-Development:
+REFRESH_TOKEN=your_google_refresh_token
+```
 
+> Never commit your `.env` file or expose your secret keys publicly.
+
+---
+
+## ▶️ Run Locally
+
+Start the development server:
+
+```bash
 npm run dev
+```
 
-Production:
+Or:
 
+```bash
 npm start
+```
 
-Example local server:
+The server should run on:
 
+```text
 http://localhost:5000
+```
 
-Authentication
+---
 
-The API uses JWT authentication.
+## 🌐 Production Server
 
-A protected request can provide the token through an HTTP cookie:
+The backend is deployed on Render:
 
-token=<JWT>
+[Live Ledger Server](https://ledge-system.onrender.com?utm_source=chatgpt.com)
 
-or through the Authorization header:
+You can use the deployed server as the base URL for API requests.
 
-Authorization: Bearer <JWT>
+```text
+https://ledge-system.onrender.com
+```
 
 Example:
 
-GET /api/...
-Authorization: Bearer eyJhbGciOi...
+```text
+https://ledge-system.onrender.com/api/...
+```
 
-The authentication middleware:
+---
 
-Reads the token from the cookie or Authorization header.
+## 🔑 Authentication
 
-Verifies the JWT.
+The application uses **JWT-based authentication**.
 
-Extracts the authenticated user ID.
+The authentication middleware can receive the token through:
 
-Loads the user from MongoDB.
+### Cookie
 
-Attaches the authenticated user to req.user.
+```text
+token=<JWT_TOKEN>
+```
 
-Rejects missing or invalid authentication with HTTP 401.
+### Authorization Header
 
-API Documentation
+```http
+Authorization: Bearer <JWT_TOKEN>
+```
 
-Authentication
+Protected routes verify the JWT and load the authenticated user before allowing access.
 
-Typical authentication operations include:
+---
 
-POST /api/auth/register
-POST /api/auth/login
-POST /api/auth/verify-otp
-POST /api/auth/forgot-password
-POST /api/auth/reset-password
-POST /api/auth/logout
+## 📮 API Testing
 
-Keep endpoint paths synchronized with the route files in the current backend. The API implementation is the source of truth.
-
-Example Registration Request
-
-POST /api/auth/register
-Content-Type: application/json
-
-{
-  "name": "Ayush Verma",
-  "email": "ayush@example.com",
-  "password": "Password@123"
-}
-
-Example Login Request
-
-POST /api/auth/login
-Content-Type: application/json
-
-{
-  "email": "ayush@example.com",
-  "password": "Password@123"
-}
-
-HTTP Status Codes
-
-Status
-
-Meaning
-
-200
-
-Request successful
-
-201
-
-Resource created
-
-400
-
-Invalid request or validation error
-
-401
-
-Authentication required/invalid
-
-403
-
-Access forbidden
-
-404
-
-Resource not found
-
-409
-
-Resource conflict
-
-500
-
-Internal server error
-
-Security
-
-The project is designed around common backend security practices:
-
-Passwords should never be stored in plain text.
-
-JWT secrets must be stored in environment variables.
-
-Database credentials must not be committed.
-
-Authentication middleware protects private endpoints.
-
-Input validation should be applied before database operations.
-
-Sensitive authentication cookies should use appropriate httpOnly, secure, and sameSite settings in production.
-
-Production deployments should use HTTPS.
-
-Login, OTP, password-reset, and other sensitive endpoints should have rate limiting.
-
-Error responses should avoid exposing secrets or internal implementation details.
-
-Banking / Ledger Domain
-
-A ledger-oriented banking backend generally represents financial activity as immutable transaction records.
-
-A typical transaction concept is:
-
-{
-  "accountId": "ACCOUNT_ID",
-  "type": "credit",
-  "amount": 5000,
-  "description": "Salary",
-  "reference": "TXN_REFERENCE",
-  "createdAt": "2026-09-28T10:30:00.000Z"
-}
-
-For financial operations, the backend should enforce:
-
-Positive monetary amounts
-
-Valid account ownership
-
-Atomic database updates
-
-Transaction consistency
-
-Unique transaction/reference identifiers
-
-Authorization before account access
-
-Audit-friendly transaction records
-
-Prevention of unauthorized balance modification
-
-Financial calculations should use an appropriate representation for monetary values rather than relying blindly on JavaScript floating-point arithmetic.
-
-API Testing
-
-Use Postman to test the backend.
+You can test the APIs using **Postman**.
 
 Recommended testing flow:
 
+```text
 Register
-   ↓
-Verify account / OTP
    ↓
 Login
    ↓
-Receive authentication token
+Receive Authentication Token
    ↓
-Call protected APIs
+Access Protected Routes
+   ↓
+Perform Banking/Ledger Operations
    ↓
 Logout
+```
 
-For cookie-based authentication, enable cookie handling in the API client.
+---
 
-Environment Variables
+## 📊 Typical HTTP Status Codes
 
-Do not publish actual credentials.
+| Status | Meaning               |
+| ------ | --------------------- |
+| `200`  | Request successful    |
+| `201`  | Resource created      |
+| `400`  | Bad request           |
+| `401`  | Unauthorized          |
+| `403`  | Forbidden             |
+| `404`  | Resource not found    |
+| `409`  | Conflict              |
+| `500`  | Internal server error |
 
-Recommended .gitignore:
+---
 
-node_modules/
-.env
-.env.*
-!.env.example
-*.log
-coverage/
-dist/
-build/
+## 🔒 Security
 
-Create an .env.example containing variable names only:
+The backend follows several security practices:
 
-PORT=
-MONGO_URI=
-JWT_SECRET=
+* Passwords are hashed before storage.
+* JWT is used for authentication.
+* Protected routes require authentication.
+* Environment variables are used for sensitive configuration.
+* MongoDB credentials are not hardcoded.
+* Authentication tokens can be stored using HTTP cookies.
+* Sensitive credentials should never be committed to GitHub.
 
-USERMAIL=
-CLIENT_ID=
-CLIENT_SECRET=
-REFRESH_TOKEN=
+---
 
-Production Checklist
+## 💳 Ledger System Concept
 
-Before deploying:
+The project is designed around a backend architecture suitable for a banking/ledger application.
 
-Use a strong JWT_SECRET
+A typical financial operation can follow:
 
-Keep .env outside version control
+```text
+Authenticated User
+       ↓
+API Request
+       ↓
+Authentication Middleware
+       ↓
+Controller
+       ↓
+Business Logic
+       ↓
+MongoDB
+       ↓
+API Response
+```
 
-Enable HTTPS
+This architecture helps separate authentication, business logic, database operations, and API handling.
 
-Configure secure cookies
+---
 
-Restrict CORS to trusted frontend origins
+## 🧪 Development Tools
 
-Add rate limiting
+### VS Code
 
-Validate all request bodies
+Recommended editor for development.
 
-Add centralized error handling
+### Postman
 
-Add request logging
+Used for testing REST APIs.
 
-Add database indexes
+### MongoDB
 
-Add health checks
+Used as the primary database.
 
-Add automated API tests
+### Git
 
-Configure MongoDB backups
+Used for source-code version control.
 
-Monitor authentication failures
+---
 
-Audit financial transactions
+## 🚀 Deployment
 
-Development
+The backend is deployed using **Render**.
 
-Useful commands:
+Production URL:
 
-npm install
-npm run dev
-npm start
+[https://ledge-system.onrender.com](https://ledge-system.onrender.com?utm_source=chatgpt.com)
 
-Run the API locally and test endpoints with Postman.
+GitHub Repository:
 
-Contributing
+[Ledge-System GitHub Repository](https://github.com/AyushIos2005/Ledge-System?utm_source=chatgpt.com)
 
-Fork the repository.
+---
 
-Create a feature branch.
+## 📌 Production Checklist
 
-git checkout -b feature/your-feature
+Before deploying a production version:
 
-Make your changes.
+* [ ] Configure production MongoDB
+* [ ] Set secure `JWT_SECRET`
+* [ ] Configure Gmail OAuth2
+* [ ] Add all environment variables to Render
+* [ ] Never expose `.env`
+* [ ] Configure CORS correctly
+* [ ] Enable HTTPS
+* [ ] Add request validation
+* [ ] Add rate limiting
+* [ ] Add proper error handling
+* [ ] Test authentication flows
+* [ ] Test protected routes
+* [ ] Verify production database connection
 
-Test the API.
+---
 
-Commit your changes.
+## 👨‍💻 Author
 
-git add .
-git commit -m "Add your feature"
+**Ayush Verma**
 
-Push the branch.
+Backend Developer & Computer Science Student
 
-git push origin feature/your-feature
+GitHub: [AyushIos2005](https://github.com/AyushIos2005)
 
-Open a Pull Request.
+---
 
-License
+## 📄 License
 
-This project is licensed under the MIT License.
+This project is intended for educational and development purposes.
 
-Author
+---
 
-Ayush Verma
+## ⭐ Project
 
-Backend Developer / Computer Science Student
-
-GitHub: AyushIos2005
-
-Disclaimer
-
-This project is intended for software development and educational purposes. It is not, by itself, a production banking platform or a substitute for the security, compliance, auditing, regulatory controls, and operational requirements required by real financial institutions.
+If you find this project useful, consider giving the repository a ⭐ on GitHub.
