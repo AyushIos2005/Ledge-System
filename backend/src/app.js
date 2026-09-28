@@ -10,7 +10,7 @@ app.use(express.json());
 app.use(cookieParser());
 // api call
 
-app.get("/",()=>{
+app.get("/",(req,res)=>{
     res.send("Server is Working properly");
 })
 app.use("/api/auth",authRouter);
