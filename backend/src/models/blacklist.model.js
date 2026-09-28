@@ -1,0 +1,23 @@
+const mon = require("mongoose");
+
+const tokenBlacklistSchema = new mon.Schema(
+    {
+        token : 
+        {
+            type : String,
+            required : true,
+            unique : true
+        },
+        
+    },{
+        timestamps : true
+    }
+)
+
+tokenBlacklistSchema.index({createdAt:1}),{
+    expireAfterSeconds : 60*60*24*3
+}
+
+const tokenBlackListModel = mon.model("tokenBlackList",tokenBlacklistSchema);
+
+module.exports = tokenBlackListModel;

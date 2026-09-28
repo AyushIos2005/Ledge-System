@@ -1,0 +1,154 @@
+{
+  "info": {
+    "name": "Ledger API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    { "key": "baseUrl", "value": "http://localhost:3000/api" },
+    { "key": "token", "value": "" },
+    { "key": "systemToken", "value": "" },
+    { "key": "accountId", "value": "" },
+    { "key": "toAccountId", "value": "" }
+  ],
+  "item": [
+    {
+      "name": "1. Register User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('token', data.token);",
+              "  console.log('token saved');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": "{{baseUrl}}/auth/register"
+      }
+    },
+    {
+      "name": "2. Login User",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 200) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('token', data.token);",
+              "  console.log('token saved');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [{ "key": "Content-Type", "value": "application/json" }],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"testuser@example.com\",\n  \"password\": \"password123\"\n}"
+        },
+        "url": "{{baseUrl}}/auth/login"
+      }
+    },
+    {
+      "name": "3. Create Account",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('accountId', data.account._id);",
+              "  console.log('accountId saved');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/accounts"
+      }
+    },
+    {
+      "name": "4. Create Second Account (recipient)",
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "if (pm.response.code === 201) {",
+              "  const data = pm.response.json();",
+              "  pm.collectionVariables.set('toAccountId', data.account._id);",
+              "  console.log('toAccountId saved');",
+              "}"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ],
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "url": "{{baseUrl}}/accounts"
+      },
+      "description": "Register+login a 2nd user first if you want a truly separate recipient account; or just reuse this same user's 2nd account for a quick smoke test."
+    },
+    {
+      "name": "5. Create Transaction (transfer funds)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{token}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"fromAccount\": \"{{accountId}}\",\n  \"toAccount\": \"{{toAccountId}}\",\n  \"amount\": 100,\n  \"idempotencyKey\": \"txn-{{$randomUUID}}\"\n}"
+        },
+        "url": "{{baseUrl}}/transcation"
+      },
+      "description": "NOTE: this will return 'Insufficient balance' unless the fromAccount has funds first — use the initial-funds endpoint below (with a system user) to seed balance."
+    },
+    {
+      "name": "6. Create Initial Funds Transaction (system user only)",
+      "request": {
+        "method": "POST",
+        "header": [
+          { "key": "Content-Type", "value": "application/json" },
+          { "key": "Authorization", "value": "Bearer {{systemToken}}" }
+        ],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"toAccount\": \"{{accountId}}\",\n  \"amount\": 1000,\n  \"idempotencyKey\": \"seed-{{$randomUUID}}\"\n}"
+        },
+        "url": "{{baseUrl}}/transcation/system/initial-funds"
+      },
+      "description": "Requires a user with systemUser:true in the DB (set manually in Mongo) and its accountModel doc with systemUser:true field linked, then login as that user to get systemToken."
+    }
+  ]
+}
